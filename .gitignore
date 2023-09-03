@@ -1,2 +1,5 @@
 hunters-fc-be/node_modules
 hunters-fc-be/.env
+
+hunters-fc-fe/node_modules
+hunters-fc-fe/src/environments
