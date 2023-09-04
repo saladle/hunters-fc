@@ -18,7 +18,7 @@ const tableName = "player";
 
 Player.getAll = function (userId, result) {
   db.query(
-    `SELECT * FROM ${tableName} WHERE isDeleted = 0`,
+    `SELECT id, code, lastName, firstName, dateOfBirth, shirtNumber, username, status FROM ${tableName} WHERE isDeleted = 0`,
     function (err, data) {
       if (err) {
         result(err);

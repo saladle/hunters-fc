@@ -1,0 +1,115 @@
+<div class="header">
+  <div class="nav">
+    <div
+      class="mobile-bar"
+      *ngIf="currentDeviceType == DeviceType.MOBILE"
+      (click)="openMobileNavDrawer()"
+    >
+      <i class="fa-solid fa-bars mobile-bar__icon"></i>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a routerLink="dashboard">
+          <img
+            src="https://i.postimg.cc/Z5wQKJmh/fchunters.png"
+            alt="Logo"
+            class="nav__logo"
+          />
+        </a>
+      </li>
+      <ng-container *ngIf="currentDeviceType != DeviceType.MOBILE">
+        <li class="nav-item">
+          <a routerLink="dashboard"
+            ><i class="fa-solid fa-house"></i>Trang chủ</a
+          >
+        </li>
+        <li class="nav-item">
+          <a routerLink="fixture"
+            ><i class="fa-regular fa-futbol"></i>Kết quả thi đấu</a
+          >
+        </li>
+        <li class="nav-item" (click)="createBasicMessage()">
+          <a><i class="fa-solid fa-warehouse"></i>Cơ sở vật chất</a>
+        </li>
+        <li class="nav-item" (click)="createBasicMessage()">
+          <a><i class="fa-solid fa-magnifying-glass-dollar"></i>Lịch sử quỹ</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="traditional-room"><i class="fa-solid fa-medal"></i>Phòng truyền thống </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="shirt-register"><i class="fa-solid fa-shirt"></i>Áo đấu tết Quý Mão </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isAdmin()">
+          <a routerLink="../admin/list-match"
+            ><i class="fa-solid fa-lock"></i>Trang quản trị</a
+          >
+        </li>
+      </ng-container>
+    </ul>
+    <ul class="user-info">
+      <li class="nav-item avatar">
+        <img [src]="userInfo?.avatar" alt="Avatar" class="avatar__img" />
+        <b> {{ userInfo?.fullName }} </b>
+        <i class="fa-solid fa-caret-down"></i>
+        <ul>
+          <li (click)="createBasicMessage()">
+            <a><i class="fa-solid fa-user"></i>Thông tin cá nhân</a>
+          </li>
+          <li (click)="createBasicMessage()">
+            <a><i class="fa-solid fa-cart-shopping"></i>Lịch sử thi đấu</a>
+          </li>
+          <li>
+            <a routerLink="../login" (click)="onClickLogOut()"
+              ><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item" *ngIf="currentDeviceType != DeviceType.MOBILE">
+        <a>
+          <!-- <p *ngIf="currentDeviceType != DeviceType.MOBILE">Hunter Coin:</p> -->
+          Hunter Coin: {{ userInfo?.coin }}
+          <i class="fa-solid fa-coins"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="mobileNavVisible"
+  nzPlacement="left"
+  nzTitle="menu"
+  (nzOnClose)="closeMobileNavDrawer()"
+>
+  <ng-container *nzDrawerContent>
+    <ul>
+      <li>
+        <a routerLink="dashboard"><i class="fa-solid fa-house"></i>Trang chủ</a>
+      </li>
+      <li>
+        <a routerLink="fixture"
+          ><i class="fa-regular fa-futbol"></i>Kết quả thi đấu</a
+        >
+      </li>
+      <li>
+        <a><i class="fa-solid fa-warehouse"></i>Cơ sở vật chất</a>
+      </li>
+      <li>
+        <a><i class="fa-solid fa-magnifying-glass-dollar"></i>Lịch sử quỹ</a>
+      </li>
+      <li *ngIf="isAdmin()">
+        <a routerLink="../admin/list-match"
+          ><i class="fa-solid fa-magnifying-glass-dollar"></i>Trang quản trị</a
+        >
+      </li>
+    </ul>
+  </ng-container>
+</nz-drawer>

@@ -13,6 +13,8 @@ app.use(bodyParser.json());
 require("./app/routes/account.route")(app);
 app.use(_AuthMiddleWare.isAuth);
 require("./app/routes/match.route")(app);
+require("./app/routes/player.route")(app);
+require("./app/routes/stadium.route")(app);
 
 app.listen(3000, function () {
     console.log("Listening on port http://localhost:3000");

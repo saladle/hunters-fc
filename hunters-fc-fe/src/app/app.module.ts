@@ -11,12 +11,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgZorroAntdModule } from './modules/ng-zorro-antd.module';
+import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.component';
+import { HomeComponent } from './routes/home/home.component';
+import { DashboardScreenComponent } from './routes/home/dashboard-screen/dashboard-screen.component';
+import { MatchDetailDrawerComponent } from './routes/home/dashboard-screen/partials/match-detail-drawer/match-detail-drawer.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginScreenComponent,
+    HomeComponent,
+    DashboardScreenComponent,
+    MatchDetailDrawerComponent
   ],
   imports: [
     BrowserModule,

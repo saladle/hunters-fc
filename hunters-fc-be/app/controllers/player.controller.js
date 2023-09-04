@@ -1,8 +1,10 @@
 var Player = require("../models/player.model");
 var JWT = require("../common/_JWT");
 
-exports.getList = function (req, res) {
-  Player.getAll(function (data) {
+exports.getList = async function (req, res) {
+  const token = req.headers.authorization;
+  const tokenInfo = await JWT.check(token);
+  Player.getAll(tokenInfo.data.id, function (data) {
     res.send({ result: data });
   });
 };

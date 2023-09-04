@@ -1,0 +1,146 @@
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="isVisibleDrawer"
+  nzPlacement="right"
+  [nzTitle]="drawerTitle"
+  [nzClosable]="true"
+  [nzWidth]="drawerWidth"
+  (nzOnClose)="closeDrawer()"
+>
+  <ng-container *nzDrawerContent>
+    <div class="drawer__container">
+      <nz-collapse>
+        <nz-collapse-panel nzHeader="Thông tin trận đấu" nzActive="true"
+          ><div class="match__detail">
+            <p><strong>Sân:</strong> {{ match?.stadiumName }}</p>
+            <p>
+              <strong>Thời gian:</strong>
+              {{ match?.time | date : "HH:mm" }}
+              {{ match?.timeSection }}
+              {{ match?.timeWeekDay }}
+              {{ match?.time | date : "dd/MM/yyyy" }}
+            </p>
+            <p><strong>Trận đấu:</strong> {{ match?.name }}</p>
+            <p><strong>Ghi chú:</strong> {{ match?.description }}</p>
+          </div></nz-collapse-panel
+        >
+        <nz-collapse-panel nzHeader="Bình chọn">
+          <div class="quick-vote">
+            <p
+              *ngIf="
+                match?.attendMemberIds?.includes(userInfo.id) ||
+                match?.denyMemberIds?.includes(userInfo.id)
+              "
+            >
+              Bạn đã bình chọn
+            </p>
+            <button
+              class="vote__btn vote__btn--agree"
+              type="button"
+              *ngIf="
+                match?.attendMemberIds?.includes(userInfo.id) ||
+                (!match?.attendMemberIds?.includes(userInfo.id) &&
+                  !match?.denyMemberIds?.includes(userInfo.id))
+              "
+              (click)="voteMatch('yes')"
+            >
+              <i class="fa-solid fa-futbol"></i>Đá
+            </button>
+            <button
+              class="vote__btn vote__btn--reject"
+              type="button"
+              *ngIf="
+                match?.denyMemberIds?.includes(userInfo.id) ||
+                (!match?.attendMemberIds?.includes(userInfo.id) &&
+                  !match?.denyMemberIds?.includes(userInfo.id))
+              "
+              (click)="voteMatch('no')"
+            >
+              <i class="fa-solid fa-xmark"></i>Không đá
+            </button>
+            <a
+              nz-button
+              nzType="link"
+              *ngIf="
+                match?.attendMemberIds?.includes(userInfo.id) ||
+                match?.denyMemberIds?.includes(userInfo.id)
+              "
+              (click)="changeVote()"
+              >Thay đổi bình chọn</a
+            >
+          </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="Danh sách thành viên" nzActive="true">
+          <div nz-row class="match__members-list">
+            <div nz-col nzSpan="12" class="match__team-white">
+              <nz-table
+                #basicTable
+                [nzShowPagination]="false"
+                [nzData]="match?.attendMemberObjs!"
+                [nzPageSize]="20"
+              >
+                <thead>
+                  <tr>
+                    <th colspan="2">
+                      Có đá ({{ match?.attendMemberObjs?.length }} cầu thủ)
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of basicTable.data; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      <img [src]="data.avatarUrl" height="30" width="30" />{{
+                        data.fullName
+                      }}
+                    </td>
+                    <!-- <td>
+                    <a>Action 一 {{ data.name }}</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a>Delete</a>
+                  </td> -->
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+
+            <div nz-col nzSpan="12" class="match__team-white">
+              <nz-table
+                #basicDenyTable
+                [nzShowPagination]="false"
+                [nzData]="match?.denyMemberObjs!"
+                [nzPageSize]="20"
+              >
+                <thead>
+                  <tr>
+                    <th colspan="2">
+                      Không đá ({{ match?.denyMemberObjs?.length }} cầu thủ)
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of basicDenyTable.data; let i = index">
+                    <td>{{ i + 1 }}</td>
+
+                    <td>
+                      <img [src]="data?.avatarUrl!" height="30" width="30" />{{
+                        data?.fullName
+                      }}
+                    </td>
+                    <!-- <td>
+                    <a>Action 一 {{ data.name }}</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a>Delete</a>
+                  </td> -->
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+
+            <div class="match__team-black"></div>
+          </div>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+  </ng-container>
+</nz-drawer>

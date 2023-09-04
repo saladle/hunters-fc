@@ -1,0 +1,131 @@
+<div class="dashboard-container">
+  <div class="vote-zone">
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <h2>Vote lịch đá bóng</h2>
+      </div>
+    </div>
+    <div class="vote-box__list">
+      <div class="vote-box__list" *ngFor="let match of matchList">
+        <div class="vote-box">
+          <div class="vote-box__header" (click)="onClickDetail(match)">
+            <b
+              >{{ match?.timeSection + " " + match?.timeWeekDay }}
+              {{ match?.time | date : "dd/MM/yyy" }}
+              {{ match?.stadiumName }}
+            </b>
+          </div>
+
+          <div class="vote-box__body">
+            <div class="vote-box__info">
+              <ul class="info__list">
+                <li class="info__item">
+                  <i class="fa-solid fa-users"></i
+                  >{{ match?.attendMemberIds?.length }}/14
+                </li>
+                <li class="info__item">
+                  <i class="fa-solid fa-clock"></i
+                  >{{ match.time | date : "HH:mm" }}
+                </li>
+                <li class="info__item">
+                  <i class="fa-solid fa-map-location-dot"></i
+                  >{{ match?.stadiumName }}
+                </li>
+              </ul>
+            </div>
+            <div class="vote-box__member">
+              <ul class="member__list">
+                <ng-container
+                  *ngFor="
+                    let attendPlayer of match.attendMemberObjs;
+                    let i = index
+                  "
+                >
+                  <li class="member__item" *ngIf="i < 3">
+                    {{ attendPlayer.fullName }}
+                  </li>
+                </ng-container>
+                <li class="member__item">
+                  <button
+                    nz-button
+                    (click)="onClickDetail(match)"
+                    nzType="primary"
+                    nzDanger
+                  >
+                    Xem chi tiết
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="vote-box__footer">
+            <div class="quick-vote">
+              <p
+                *ngIf="
+                  match.attendMemberIds?.includes(userInfo.id) ||
+                    match.denyMemberIds?.includes(userInfo.id);
+                  else fastVote
+                "
+              >
+                Bạn đã bình chọn:
+              </p>
+              <ng-template #fastVote> Vote nhanh: </ng-template>
+              <button
+                class="vote__btn vote__btn--agree"
+                type="button"
+                *ngIf="
+                  match.attendMemberIds?.includes(userInfo.id) ||
+                  (!match.attendMemberIds?.includes(userInfo.id) &&
+                    !match.denyMemberIds?.includes(userInfo.id))
+                "
+                (click)="voteMatch(match, 'yes')"
+              >
+                <i class="fa-solid fa-futbol"></i>Đá
+              </button>
+              <button
+                class="vote__btn vote__btn--reject"
+                type="button"
+                *ngIf="
+                  match.denyMemberIds?.includes(userInfo.id) ||
+                  (!match.attendMemberIds?.includes(userInfo.id) &&
+                    !match.denyMemberIds?.includes(userInfo.id))
+                "
+                (click)="voteMatch(match, 'no')"
+              >
+                <i class="fa-solid fa-xmark"></i>Không đá
+              </button>
+              <a
+                *ngIf="
+                  match.attendMemberIds?.includes(userInfo.id) ||
+                  match.denyMemberIds?.includes(userInfo.id)
+                "
+                (click)="onClickChangeVote(match)"
+                >Thay đổi</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-match-detail-drawer
+  #matchDetailDrawer
+  (onVoteMatch)="onClickVoteMatch($event)"
+  (onChangeVote)="onClickChangeVote($event)"
+></app-match-detail-drawer>
+
+<nz-modal
+  [(nzVisible)]="isVisibleChangeVoteModal"
+  nzTitle="Xác nhận thay đổi vote"
+  (nzOnCancel)="hideChangeVoteModal()"
+  (nzOnOk)="changeVote()"
+  nzCancelText="Hủy"
+  nzOkText="Chuyển"
+>
+  <ng-container *nzModalContent>
+    <div [innerHTML]="confirmChangeVoteMessage"></div>
+  </ng-container>
+</nz-modal>
