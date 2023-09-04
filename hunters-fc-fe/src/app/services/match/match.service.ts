@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Match } from 'src/app/models/match';
 import { getRequestOption } from 'src/app/utils/helper';
 import { environment } from 'src/environments/environment';
 
@@ -16,6 +17,9 @@ export class MatchService {
       params = params.append(key, query[key]);
     }
     return this.http.get<any>(this.baseUrl, { ...getRequestOption(), params });
+  }
+  create(data: any) {
+    return this.http.post<Match>(this.baseUrl, data, getRequestOption());
   }
   updateProp(id: any, data: any) {
     return this.http.patch(`${this.baseUrl}/${id}`, data, getRequestOption());

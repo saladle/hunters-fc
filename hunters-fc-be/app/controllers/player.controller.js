@@ -51,10 +51,12 @@ exports.login = function (req, res) {
 exports.sessionInfo = async function (req, res) {
   const token = req.headers.authorization;
   const tokenInfo = await JWT.check(token);
-  const response = {
-    id: tokenInfo.data.id,
-    name: tokenInfo.data.name,
-    email: tokenInfo.data.email,
-  }
-  res.send({status: true, data: response});
-}
+  // const response = {
+  //   id: tokenInfo.data.id,
+  //   name: tokenInfo.data.name,
+  //   email: tokenInfo.data.email,
+  // }
+  const response = { ...tokenInfo.data };
+  delete response.password;
+  res.send({ status: true, data: response });
+};

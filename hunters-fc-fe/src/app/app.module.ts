@@ -15,6 +15,9 @@ import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.co
 import { HomeComponent } from './routes/home/home.component';
 import { DashboardScreenComponent } from './routes/home/dashboard-screen/dashboard-screen.component';
 import { MatchDetailDrawerComponent } from './routes/home/dashboard-screen/partials/match-detail-drawer/match-detail-drawer.component';
+import { MatchManagementComponent } from './routes/admin/match-management/match-management.component';
+import { AdminComponent } from './routes/admin/admin.component';
+import { MatchFormDrawerComponent } from './routes/admin/match-management/partials/match-form-drawer/match-form-drawer.component';
 
 registerLocaleData(en);
 
@@ -24,7 +27,10 @@ registerLocaleData(en);
     LoginScreenComponent,
     HomeComponent,
     DashboardScreenComponent,
-    MatchDetailDrawerComponent
+    MatchDetailDrawerComponent,
+    MatchManagementComponent,
+    AdminComponent,
+    MatchFormDrawerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { USER_INFO } from 'src/app/constants/constants';
-import { DeviceType } from 'src/app/constants/enums';
-import { AuthService, Role } from 'src/app/shared/auth.service';
+import { DeviceType, Role } from 'src/app/constants/enums';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-home',

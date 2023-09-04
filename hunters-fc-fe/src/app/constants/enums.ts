@@ -8,3 +8,8 @@ export enum VoteStatus {
   No = 'Không đá',
   NotYet = 'Chưa vote',
 }
+export enum Role {
+  Admin = 0,
+  User = 1,
+  Guess = 2,
+}

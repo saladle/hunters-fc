@@ -6,11 +6,8 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { JWT_TOKEN, USER_INFO } from '../constants/constants';
 import { environment } from 'src/environments/environment';
+import { Role } from '../constants/enums';
 
-export enum Role {
-  Admin = 0,
-  User = 1,
-}
 @Injectable({
   providedIn: 'root',
 })
@@ -27,7 +24,7 @@ export class AuthService {
     private http: HttpClient,
     private msg: NzMessageService
   ) {
-    if(this.getJwtToken()) this.loginSuccess = true;
+    if (this.getJwtToken()) this.loginSuccess = true;
     // this.getUserInfo().toPromise().then((res) => {
     //   debugger;
     // })
@@ -42,6 +39,7 @@ export class AuthService {
           this.loginSuccess = true;
           this.userInfo = res.data;
           this.router.navigate(['/home/dashboard']);
+          this.role = res.data.role;
         }
       })
     );
@@ -57,6 +55,7 @@ export class AuthService {
         if (res.status) {
           this.userInfo = res.data;
           this.userInfo$ = res.data;
+          this.role = res.data.role;
         } else {
           this.msg.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
           this.logout();

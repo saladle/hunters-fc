@@ -9,6 +9,9 @@ const Player = function (player) {
   this.username = player.username;
   this.password = player.password;
   this.status = player.status;
+  this.role = role;
+  this.coin = coin;
+  this.avatarUrl = avatarUrl;
   this.isDeleted = player.isDeleted;
   this.createdAt = player.createdAt;
   this.createdBy = player.createdBy;
@@ -18,7 +21,7 @@ const tableName = "player";
 
 Player.getAll = function (userId, result) {
   db.query(
-    `SELECT id, code, lastName, firstName, dateOfBirth, shirtNumber, username, status FROM ${tableName} WHERE isDeleted = 0`,
+    `SELECT id, code, lastName, firstName, dateOfBirth, shirtNumber, username, status, role, coin, avatarUrl FROM ${tableName} WHERE isDeleted = 0`,
     function (err, data) {
       if (err) {
         result(err);
@@ -73,7 +76,7 @@ Player.remove = function (id, result) {
 };
 
 Player.checkLogin = function (data, result) {
-    const queryString = `SELECT id, code, lastName, firstName, dateOfBirth, shirtNumber, username, password, status FROM ${tableName} WHERE username = ? and password = ?`;
+    const queryString = `SELECT id, code, lastName, firstName, dateOfBirth, shirtNumber, username, password, status, role, coin, avatarUrl FROM ${tableName} WHERE username = ? and password = ?`;
   db.query(
     queryString,
     [data.username, data.password],

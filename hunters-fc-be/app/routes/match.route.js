@@ -4,10 +4,8 @@ module.exports = function (router) {
     router.get("/match", matchController.getList);
 
     router.get("/match/:id", matchController.getById);
-    
-    // router.get("/match/today", matchController.getListToday);
-  
-    // router.post("/match", matchController.add);
+      
+    router.post("/match", matchController.add);
   
     // router.put("/match/:id", matchController.update);
 

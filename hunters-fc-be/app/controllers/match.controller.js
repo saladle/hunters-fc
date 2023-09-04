@@ -29,6 +29,26 @@ exports.getById = async function (req, res) {
   });
 };
 
+exports.add = async function (req, res) {
+  var data = req.body;
+  const token = req.headers.authorization;
+  const tokenInfo = await JWT.check(token);
+  data.createdBy = tokenInfo.data.id;
+  data.attendMemberIds = JSON.stringify(data.attendMemberIds);
+  data.denyMemberIds = JSON.stringify(data.denyMemberIds);
+  // data.checkList = JSON.stringify(data.checkList);
+  // if (data.startDate)
+  //   data.startDate = getFormattedMySqlDateTime(data.startDate);
+
+  // if (data.finishDate)
+  //   data.finishDate = getFormattedMySqlDateTime(data.finishDate);
+  Match.create(data, function (response) {
+    response.attendMemberIds = JSON.parse(response.attendMemberIds);
+    response.denyMemberIds = JSON.parse(response.denyMemberIds);
+    res.send({ result: response });
+  });
+};
+
 exports.updateLittle = function (req, res) {
   var data = req.body;
   if (data && data.attendMemberIds) {

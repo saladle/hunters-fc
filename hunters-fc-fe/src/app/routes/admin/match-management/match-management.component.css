@@ -1,0 +1,9 @@
+.button-yellow:hover {
+  /* background-color: yellow; */
+  color: #F0AD4E;
+  border-color: #F0AD4E;
+}
+
+/* .ant-btn-primary:hover {
+  color: red;
+} */

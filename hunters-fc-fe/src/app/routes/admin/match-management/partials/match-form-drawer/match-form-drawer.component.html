@@ -1,0 +1,213 @@
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="isVisibleDrawer"
+  nzPlacement="right"
+  [nzTitle]="drawerTitle"
+  [nzWidth]="drawerWidth"
+  (onCloseDrawer)="closeDrawer()"
+>
+  <div class="drawer__container">
+    <div class="match-info-layout">
+      <div class="info__header">
+        <h3>Thông tin trận đấu</h3>
+      </div>
+      <div class="info__body">
+        <form nz-form [formGroup]="matchDetailForm">
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired
+              >Chi tiết</nz-form-label
+            >
+            <nz-form-control
+              nzErrorTip="Thông tin trận đấu không được bỏ trống"
+            >
+              <input
+                nz-input
+                placeholder="Nhập thông tin chi tiết trận dấu"
+                [disabled]="!isEdit"
+                formControlName="name"
+              />
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>Sân</nz-form-label>
+            <nz-form-control nzErrorTip="Sân bóng không được bỏ trống">
+              <nz-select
+                formControlName="stadium"
+                nzPlaceHolder="Chọn sân bóng"
+              >
+                <nz-option
+                  *ngFor="let option of listOfStadium"
+                  [nzLabel]="option"
+                  [nzValue]="option"
+                ></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired
+              >Chon thời gian</nz-form-label
+            >
+            <nz-form-control [nzSm]="16" [nzXs]="24">
+              <!-- <nz-date-picker formControlName="time"></nz-date-picker> -->
+              <input
+                nz-input
+                placeholder="Nhập thời gian trận đấu"
+                formControlName="day"
+              />
+              <div nz-row nzGutter="8" class="mt-12">
+                <div nz-col nzSpan="16">
+                  <input
+                    nz-input
+                    [disabled]="true"
+                    [value]="templateDay"
+                  />
+
+                </div>
+                <div nz-col nzSpan="8">
+                  <button nz-button><span nz-icon nzType="copy" (click)="onCopyTemplateDay()"></span></button>
+                </div>
+
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired
+              >Ghi chú
+            </nz-form-label>
+            <nz-form-control [nzSm]="16" [nzXs]="24">
+              <textarea
+                nz-input
+                placeholder="Nhập ghi chú trận đấu"
+                [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                formControlName="note"
+              ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired
+              >Đã đá
+            </nz-form-label>
+            <nz-form-control [nzSm]="16" [nzXs]="24">
+              <nz-switch formControlName="isKickedOff"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control>
+              <button
+                nz-button
+                nzType="primary"
+                [disabled]="!matchDetailForm.valid"
+                (click)="submitForm()"
+              >
+                Lưu trận đấu
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+    <div class="match-member-layout">
+      <div class="member__header d-flex align-items-center">
+        <h3>Danh sách tham gia</h3>
+        <div class="show-potential-toggle">
+          <nz-switch [(ngModel)]="isShowPotential" (ngModelChange)="onChangeShowPotential($event)"></nz-switch>
+        </div>
+      </div>
+      <div class="member__body">
+        <nz-table
+          #basicTable
+          [nzData]="allUsers"
+          [nzPageSize]="40"
+          [nzShowPagination]="false"
+          [nzBordered]="true"
+        >
+          <thead>
+            <tr>
+              <th
+                *ngFor="let column of listOfColumns"
+                [nzSortOrder]="column.sortOrder"
+                [nzSortFn]="column.sortFn"
+                [nzSortDirections]="column.sortDirections"
+                [nzFilterMultiple]="column.filterMultiple"
+                [nzFilters]="column.listOfFilter"
+                [nzFilterFn]="column.filterFn"
+                [nzShowSort]="column.isShowSort"
+                [nzShowFilter]="column.isShowFilter"
+                [nzWidth]="column.width"
+              >
+                {{ column.name }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data; let i = index">
+              <td class="text-center">
+                {{ i + 1 + "/" + basicTable.data.length }}
+              </td>
+              <td>
+                <img [src]="data.avatarUrl" height="40" width="40" />
+                {{ data.name }}
+              </td>
+              <td>{{ data.status }}</td>
+              <td>
+                <a
+                  [href]="data?.facebookLink"
+                  target="_blank"
+                  (click)="clickActionUser(data)"
+                  ><button nz-button>
+                    <span nz-icon nzType="message" nzTheme="outline"></span>Nhắn
+                    tin
+                  </button></a
+                >
+              </td>
+              <td class="text-center">
+                <button
+                  class="mx-6"
+                  *ngIf="data.status != VoteStatus.Yes"
+                  nz-button
+                  nzType="primary"
+                  nzShape="circle"
+                  nz-popconfirm
+                  nzPopconfirmTitle="Chuyển bình chọn của {{
+                    data.name
+                  }} thành {{ VoteStatus.Yes }} ?"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="changeVote(data.id, VoteStatus.Yes)"
+                  [nzOkText]="'Đồng ý'"
+                  [nzCancelText]="'Hủy'"
+                >
+                  <span nz-icon nzType="check"></span>
+                </button>
+                <button
+                  class="mx-6"
+                  *ngIf="data.status != VoteStatus.No"
+                  nz-button
+                  nzType="primary"
+                  nzShape="circle"
+                  nzDanger
+                  nz-popconfirm
+                  nzPopconfirmTitle="Chuyển bình chọn của {{
+                    data.name
+                  }} thành {{ VoteStatus.No }} ?"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="changeVote(data.id, VoteStatus.No)"
+                  [nzOkText]="'Đồng ý'"
+                  [nzCancelText]="'Hủy'"
+                >
+                  <span nz-icon nzType="close"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+</nz-drawer>
+
+<ng-template #customFooterTpl> </ng-template>

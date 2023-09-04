@@ -44,6 +44,16 @@ Match.getById = function (userId, recordId, result) {
   );
 };
 
+Match.create = function (payload, result) {
+  db.query(`INSERT INTO ${tableName} SET ?`, payload, function (err, data) {
+    if (err) {
+      result(err);
+    } else {
+      result({ id: data.insertId, ...payload });
+    }
+  });
+};
+
 Match.updateLittle = function (recordId, payload, result) {
   let query = `UPDATE ${tableName} SET`;
   const fields = Object.keys(payload);

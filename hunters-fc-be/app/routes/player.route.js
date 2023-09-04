@@ -14,5 +14,7 @@ module.exports = function (router) {
     // router.patch("/match/:id", matchController.updateLittle);
   
     // router.delete("/match/:id", matchController.remove);
+
+    router.get("/user/info", playerController.sessionInfo);
   };
   
