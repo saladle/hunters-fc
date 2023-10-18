@@ -9,6 +9,7 @@ import { StadiumService } from 'src/app/services/stadium/stadium.service';
 import { MatchDetailDrawerComponent } from './partials/match-detail-drawer/match-detail-drawer.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TelegramService } from 'src/app/services/telegram/telegram.service';
+import { getTimeSection, getTimeWeekDay } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-dashboard-screen',
@@ -52,7 +53,7 @@ export class DashboardScreenComponent implements OnInit {
         if (res && res.result) {
           let resVal = res.result;
           resVal.forEach((element: any) => {
-            this.transformData(element);
+            this.transformDataMatch(element);
           });
           this.matchList = resVal;
         }
@@ -86,9 +87,9 @@ export class DashboardScreenComponent implements OnInit {
       });
   }
 
-  transformData(element: Match) {
-    element.timeSection = this.getTimeSection(element.time);
-    element.timeWeekDay = this.getTimeWeekDay(element.time);
+  transformDataMatch(element: Match) {
+    element.timeSection = getTimeSection(element.time);
+    element.timeWeekDay = getTimeWeekDay(element.time);
     element.stadiumName = this.stadiumList.find(
       (item) => item.id == element.stadiumId
     )?.name!;
@@ -107,60 +108,7 @@ export class DashboardScreenComponent implements OnInit {
   onClickDetail(match: Match) {
     this.matchDetailDrawer.openDrawer(match, this.userInfo);
   }
-  getTimeSection(date: Date): string {
-    if (!date) return '';
-    const fullDate = new Date(date);
-    var hour = fullDate.getHours();
-    var session: string;
-    if (hour <= 11) {
-      session = 'Sáng';
-    } else if (hour >= 19) {
-      session = 'Tối';
-    } else {
-      session = 'Chiều';
-    }
-    return session;
-  }
-  getTimeWeekDay(date: Date): string {
-    if (!date) return '';
-    const fullDate = new Date(date);
-    var weekDay: string;
-    switch (fullDate.getDay()) {
-      case 0: {
-        weekDay = 'Chủ Nhật';
-        break;
-      }
-      case 1: {
-        weekDay = 'Thứ Hai';
-        break;
-      }
-      case 2: {
-        weekDay = 'Thứ Ba';
-        break;
-      }
-      case 3: {
-        weekDay = 'Thứ Tư';
-        break;
-      }
-      case 4: {
-        weekDay = 'Thứ Năm';
-        break;
-      }
-      case 5: {
-        weekDay = 'Thứ Sáu';
-        break;
-      }
-      case 6: {
-        weekDay = 'Thứ Bảy';
-        break;
-      }
-      default: {
-        weekDay = 'Chủ Nhật';
-        break;
-      }
-    }
-    return weekDay;
-  }
+
   async voteMatch(match: Match, voteStatus: any) {
     await this.matchService
       .voteMatch(match.id, { voteStatus: voteStatus })

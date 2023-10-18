@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatchFormDrawerComponent } from './partials/match-form-drawer/match-form-drawer.component';
 import { MatchService } from 'src/app/services/match/match.service';
-import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import {
+  NzContextMenuService,
+  NzDropdownMenuComponent,
+} from 'ng-zorro-antd/dropdown';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { PlayerService } from 'src/app/services/player/player.service';
 
@@ -13,7 +16,7 @@ import { PlayerService } from 'src/app/services/player/player.service';
 export class MatchManagementComponent implements OnInit {
   @ViewChild('matchFormDrawer')
   matchFormDrawer!: MatchFormDrawerComponent;
-  allMatches: any;
+  matchList: any;
   allUsers: any;
   currentMatch: any;
   visible = false;
@@ -37,8 +40,12 @@ export class MatchManagementComponent implements OnInit {
   }
 
   async getListMatch() {
-    var response = await this.matchService.getList({}).toPromise();
-    this.allMatches = response;
+    await this.matchService
+      .getList({})
+      .toPromise()
+      .then((res: any) => {
+        if (res && res.result) this.matchList = res.result;
+      });
   }
 
   async getListUsers() {
@@ -69,7 +76,6 @@ export class MatchManagementComponent implements OnInit {
     //   .toPromise()
     //   .then((res) => {
     //     console.log(res);
-
     //     this.fetchData();
     //   });
   }

@@ -21,7 +21,7 @@ const routes: Routes = [
     path: 'admin',
     component: AdminComponent,
     canActivate: [AuthGuard],
-    data: { role: [Role.Admin] },
+    // data: { role: [Role.Admin] },
     children: [
       { path: 'match-management', component: MatchManagementComponent },
     ],

@@ -16,6 +16,6 @@ require("./app/routes/match.route")(app);
 require("./app/routes/player.route")(app);
 require("./app/routes/stadium.route")(app);
 
-app.listen(3000, function () {
-    console.log("Listening on port http://localhost:3000");
+app.listen(process.env.PORT, function () {
+    console.log(`Listening on port http://localhost:${process.env.PORT}`);
   });

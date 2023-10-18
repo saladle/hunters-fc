@@ -8,7 +8,7 @@
 </div>
 
 <div class="mt-12">
-  <nz-table #basicTable [nzData]="allMatches">
+  <nz-table #basicTable [nzData]="matchList">
     <thead>
       <tr>
         <th class="text-center">STT</th>
@@ -28,10 +28,10 @@
         [ngClass]="{ 'color-red': data?.isKickedOff == false }"
       >
         <th class="text-center">{{ i + 1 }}</th>
-        <td>{{ data?.turnId }}</td>
         <td>{{ data?.name }}</td>
+        <td>{{ data?.description }}</td>
         <td>
-          {{ data.day | date : "HH:mm"
+          {{ data.time | date : "HH:mm"
           }}{{ data.session + " " + data.weekdays }}
         </td>
         <td>{{ data.day | date : "dd/MM/yyyy" }}</td>

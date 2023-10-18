@@ -87,4 +87,8 @@ export class HomeComponent implements OnInit {
   closeMobileNavDrawer() {
     this.mobileNavVisible = false;
   }
+
+  test() {
+    debugger;
+  }
 }

@@ -21,10 +21,6 @@ export class MatchDetailDrawerComponent implements OnInit {
 
   constructor() {}
 
-  ngOnChanges() {
-    debugger;
-  }
-
   ngOnInit(): void {
     this.currentDeviceType = getCurrentDeviceType();
     this.calculateDrawerWidth();

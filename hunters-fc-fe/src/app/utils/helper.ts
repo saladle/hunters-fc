@@ -1,5 +1,6 @@
 import { JWT_TOKEN } from '../constants/constants';
 import { DeviceType } from '../constants/enums';
+import { Match } from '../models/match';
 
 function getJwtToken(): string {
   return localStorage.getItem(JWT_TOKEN)!;
